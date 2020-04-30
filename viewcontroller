@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+var userDate = ""
 class ViewController: UIViewController {
     
     @IBOutlet weak var imageTitle: UILabel!
@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var imageDescription: UITextView!
     @IBOutlet var apodPhoto: UIImageView!
     
+    @IBOutlet var apodDate: UIDatePicker!
     
     let photoInfoController = PhotoInfoController()
     
@@ -24,18 +25,32 @@ class ViewController: UIViewController {
        
     }
     
-   
-
+    func getDate(){
+        
+        let pictureDate = self.apodDate.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let selectedDate = dateFormatter.string(from: pictureDate)
+        // pictureDate = String(selectedDate)
+        print(selectedDate)
+        userDate = selectedDate
+       
+    }
     
+
     @IBAction func fetchInfo(_ sender: Any) {
+        
+       getDate()
+        
         imageDescription.text = ""
         imageCopyright.text = ""
         imageTitle.text = "Fetching Update"
-        
+                
         photoInfoController.fetchPhotoInfo { (photoInfo) in
             if let photoInfo = photoInfo {
               
                 DispatchQueue.main.async {
+                                      
                     self.imageTitle.text = photoInfo.title
                     self.imageDescription.text = photoInfo.description
                     
@@ -52,8 +67,7 @@ class ViewController: UIViewController {
                 }
             }
         }
-        
     }
-    
+   
 }
 
